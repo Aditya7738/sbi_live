@@ -78,15 +78,24 @@ Text normaltext(text, Color color,
 }
 
 flutterToastMsg(String txt) {
-  return ScaffoldMessenger.of(Get.context!).showSnackBar(
-    SnackBar(
-      backgroundColor: PURPLE,
-      duration: const Duration(seconds: 2),
-      content: normaltext(
-        txt,
-        WHITE,
-      ),
-    ),
+  // return ScaffoldMessenger.of(Get.context!).showSnackBar(
+  //   SnackBar(
+  //     backgroundColor: PURPLE,
+  //     duration: const Duration(seconds: 2),
+  //     content: normaltext(
+  //       txt,
+  //       WHITE,
+  //     ),
+  //   ),
+  // );
+
+  return Get.snackbar(
+    "",
+    txt,
+    backgroundColor: PURPLE,
+    colorText: WHITE,
+    snackPosition: SnackPosition.TOP,
+    duration: const Duration(seconds: 2),
   );
 }
 

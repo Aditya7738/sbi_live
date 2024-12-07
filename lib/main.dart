@@ -16,21 +16,39 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    return const GetMaterialApp(
-      title: 'SBI Global Factors Ltd.',
-      home: SplashPage(),
-      // home: SubscriptionPage(),
-      useInheritedMediaQuery: true,
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      //   theme: ThemeData(),
-      // darkTheme: ThemeData.dark(), // standard dark theme
-      // themeMode: ThemeMode.system, // d
-    );
+
+    if (false
+        //Platform.isAndroid
+        ) {
+      return const GetMaterialApp(
+        title: 'SBI Global Factors Ltd.',
+        home: SplashPage(),
+        // home: SubscriptionPage(),
+        useInheritedMediaQuery: true,
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        //   theme: ThemeData(),
+        // darkTheme: ThemeData.dark(), // standard dark theme
+        // themeMode: ThemeMode.system, // d
+      );
+    } else {
+      return GetCupertinoApp(
+        title: 'SBI Global Factors Ltd.',
+        home: SplashPage(),
+        // home: SubscriptionPage(),
+        useInheritedMediaQuery: true,
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+      );
+    }
   }
 }
 
