@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:sbi/view/home.dart';
 
 import 'splash.dart';
 
@@ -17,39 +18,55 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    if (false
-        //Platform.isAndroid
-        ) {
-      return const GetMaterialApp(
-        title: 'SBI Global Factors Ltd.',
-        home: SplashPage(),
-        // home: SubscriptionPage(),
-        useInheritedMediaQuery: true,
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        //   theme: ThemeData(),
-        // darkTheme: ThemeData.dark(), // standard dark theme
-        // themeMode: ThemeMode.system, // d
-      );
-    } else {
-      return GetCupertinoApp(
-        title: 'SBI Global Factors Ltd.',
-        home: SplashPage(),
-        // home: SubscriptionPage(),
-        useInheritedMediaQuery: true,
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-      );
-    }
+    // if (false
+    //     //Platform.isAndroid
+    //     ) {
+    return GetMaterialApp(
+      title: 'SBI Global Factors Ltd.',
+      home:
+          //  Scaffold(
+          //   body: Center(
+          //     child: Text('Hello World'),
+          //   ),
+          // ),
+          //  SplashPage(),
+          MyHomePage(),
+      // home: SubscriptionPage(),
+      useInheritedMediaQuery: true,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      //   theme: ThemeData(),
+      // darkTheme: ThemeData.dark(), // standard dark theme
+      // themeMode: ThemeMode.system, // d
+    );
+
+    // return MaterialApp(
+    //   home: Scaffold(
+    //     body: Center(
+    //       child: Text('Hello World'),
+    //     ),
+    //   ),
+    // );
   }
+  // else {
+  //   return GetCupertinoApp(
+  //     title: 'SBI Global Factors Ltd.',
+  //     home: SplashPage(),
+  //     // home: SubscriptionPage(),
+  //     useInheritedMediaQuery: true,
+  //     debugShowCheckedModeBanner: false,
+  //     localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+  //       GlobalMaterialLocalizations.delegate,
+  //       GlobalWidgetsLocalizations.delegate,
+  //       GlobalCupertinoLocalizations.delegate,
+  //     ],
+  //   );
+  // }
+  //}
 }
 
 class MyHttpOverrides extends HttpOverrides {

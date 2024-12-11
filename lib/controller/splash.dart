@@ -11,6 +11,9 @@ import '../services/local_auth_services.dart';
 import '../services/service.dart';
 import '../view/login.dart';
 
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+
 class SplashController extends GetxController {
   late final Timer? timer;
 
@@ -44,42 +47,71 @@ class SplashController extends GetxController {
     super.dispose();
   }
 
+  // static String baseURL = "https://dashboard.sbiglobal.in/sbigflmaster/api";
+  static String baseURL = "https://115.124.123.87/sbigflmaster/api";
+  // static String baseURL = "115.124.123.87";
+  // static String baseURL = "https://sbimaster.initialinfinity.com/api";
+
   login({bool checkLogin = false}) async {
     if (checkLogin || fbKeyLogin.currentState!.saveAndValidate()) {
       isLoading.value = true;
-      var data = await Service.login(
-        Service.userNameController.text,
-        Service.passwordController.text,
-      );
+      // var data = await Service.login(
+      //   Service.userNameController.text,
+      //   Service.passwordController.text,
+      // );
 
-      if (data["result"]["outcome"]["outcomeId"] == 1) {
-        SharePreferencesManager.instance.setString("usercode",
-            "${Service.userNameController.text}~${Service.passwordController.text}");
-        SharePreferencesManager.instance
-            .setString("password", Service.passwordController.text);
-        await Service.storage.write(
-            key: 'token',
-            value: data["result"]["outcome"]["tokens"].toString());
-        await Service.storage.write(
-            key: 'loginid',
-            value: data["result"]["data"]["login_id"].toString());
-        await Service.storage.write(
-            key: 'companyId',
-            value: data["result"]["data"]["com_id"].toString());
-        isLoading.value = false;
-        flutterToastMsg(
-          "Login Successfully",
+      try {
+        var response = await http.post(
+          Uri.parse("$baseURL/LoginDetails"),
+          headers: {
+            "Content-Type": 'application/json',
+          },
+          body: convert.jsonEncode({
+            "contact_no": Service.userNameController.text,
+            "com_password": Service.passwordController.text,
+          }),
         );
-        await LocalAuth.authenticate();
 
-        // Get.to(() => MyHomePage());
+        if (response.statusCode == 200) {
+          print(response.body);
+          var resp = convert.jsonDecode(response.body);
+          if (resp["result"]["outcome"]["outcomeId"] == 1) {
+            SharePreferencesManager.instance.setString("usercode",
+                "${Service.userNameController.text}~${Service.passwordController.text}");
+            SharePreferencesManager.instance
+                .setString("password", Service.passwordController.text);
+            await Service.storage.write(
+                key: 'token',
+                value: resp["result"]["outcome"]["tokens"].toString());
+            await Service.storage.write(
+                key: 'loginid',
+                value: resp["result"]["data"]["login_id"].toString());
+            await Service.storage.write(
+                key: 'companyId',
+                value: resp["result"]["data"]["com_id"].toString());
+            isLoading.value = false;
+            flutterToastMsg(
+              "Login Successfully",
+            );
+            await LocalAuth.authenticate();
 
-        Get.to(() => MyHomePage());
-      } else if (data["result"]["outcome"]["outcomeId"] == 0) {
-        flutterToastMsg(data["result"]["outcome"]["outcomeDetail"]);
-        update();
+            Get.to(() => MyHomePage());
+          } else if (resp["result"]["outcome"]["outcomeId"] == 0) {
+            flutterToastMsg(resp["result"]["outcome"]["outcomeDetail"]);
+            update();
+          }
+          isLoading.value = false;
+        } else {
+          print(response.body);
+          flutterToastMsg("Server Error status code ${response.statusCode}");
+          isLoading.value = false;
+          // return;
+        }
+      } catch (e) {
+        print("error: $e");
+        flutterToastMsg("Server Error");
+        isLoading.value = false;
       }
-      isLoading.value = false;
     }
   }
 }
